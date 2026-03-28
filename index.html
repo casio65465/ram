@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Home - Kinder Garden Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-fadeUp {
+      animation: fadeUp 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      transition: top 0.2s ease;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,20,80,0.65) 100%);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease infinite;
+    }
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .section-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-reveal .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .section-reveal.revealed .reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-reveal.revealed .reveal-item:nth-child(1) { transition-delay: 0.05s; }
+    .section-reveal.revealed .reveal-item:nth-child(2) { transition-delay: 0.1s; }
+    .section-reveal.revealed .reveal-item:nth-child(3) { transition-delay: 0.15s; }
+    .section-reveal.revealed .reveal-item:nth-child(4) { transition-delay: 0.2s; }
+    .section-reveal.revealed .reveal-item:nth-child(5) { transition-delay: 0.25s; }
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.2, 0.95, 0.4, 1.05);
+    }
+    .card-hover:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 40px -12px rgba(0,0,0,0.25);
+    }
+    .testimonial-slider {
+      transition: transform 0.7s ease-out;
+    }
+    .animated-link {
+      position: relative;
+      display: inline-block;
+    }
+    .animated-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .animated-link:hover::after {
+      width: 100%;
+    }
+    .footer-white-texture {
+      background-image: radial-gradient(circle at 25% 40%, rgba(0, 0, 0, 0.02) 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+    }
+    .footer-noise::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2563eb;
+      border-radius: 10px;
+    }
+    .top-contact-bar a {
+      transition: all 0.2s ease;
+    }
+    .event-card {
+      transition: all 0.3s ease;
+    }
+    .partner-logo {
+      filter: grayscale(100%);
+      transition: all 0.3s ease;
+    }
+    .partner-logo:hover {
+      filter: grayscale(0%);
+      transform: scale(1.05);
+    }
+    .countdown-number {
+      background: rgba(37, 99, 235, 0.1);
+      backdrop-filter: blur(4px);
+      border-radius: 1rem;
+      padding: 0.5rem 0.75rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      min-width: 60px;
+      text-align: center;
+    }
+    @media (max-width: 640px) {
+      .countdown-number {
+        font-size: 1rem;
+        padding: 0.35rem 0.5rem;
+        min-width: 45px;
+      }
+    }
+    /* Notice modal - image only, perfectly sized */
+    .notice-media-wrapper {
+      max-height: 70vh;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9fafb;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    .notice-media-wrapper img {
+      width: auto;
+      height: auto;
+      max-height: 70vh;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 1rem;
+    }
+    @media (max-width: 768px) {
+      .notice-media-wrapper {
+        max-height: 60vh;
+      }
+      .notice-media-wrapper img {
+        max-height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+
+  <!-- Preloader -->
+  <div id="preloader" class="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center z-[10000] transition-all duration-700">
+    <div class="relative">
+      <img src="Image/Sudeep Logo.png" alt="Logo" class="w-28 h-28 animate-pulse drop-shadow-2xl">
+      <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-12 h-1 bg-blue-500 rounded-full animate-ping"></div>
+    </div>
+    <h2 class="mt-10 text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">Supeksha Innovations Nepal</h2>
+  </div>
+
+  <!-- NOTICE MODAL - SINGLE IMAGE (NO VIDEO) -->
+  <div id="noticeModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999] hidden transition-all duration-300">
+    <div id="noticeBox" class="relative bg-white rounded-2xl shadow-2xl w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] max-w-[720px] overflow-hidden transform scale-95 opacity-0 transition-all duration-500 ease-out">
+      <button onclick="closeNotice()" class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold hover:bg-red-600 transition z-20">✕</button>
+      
+      <!-- Only Image Notice -->
+      <div class="p-4">
+        <div class="notice-media-wrapper">
+          <img src="Image/Notice/Best of Luck-2082.png" alt="Notice Image" class="rounded-xl shadow-sm">
+        </div>
+        <div class="text-center mt-3">
+          <p class="text-xs text-gray-500">📢 Important Announcement</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Contact Bar - FULL RIGHT ALIGNMENT -->
+  <div id="topContactBar" class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-200 z-[60] py-2.5 px-4 md:px-6 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-end items-center gap-4 text-xs sm:text-sm text-gray-700">
+      <div class="flex items-center gap-1.5 hover:text-blue-600 transition pl-2">
+        <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+        <span class="truncate">Sanfehatbazzar-03, Achham, Nepal</span>
+      </div>
+      <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
+      <a href="tel:+9779801165699" class="flex items-center gap-1.5 hover:text-blue-600 transition">
+        <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 1.104.896 2 2 2h15.5c1.104 0 2-.896 2-2m-16.5 0v10.5c0 1.104.896 2 2 2h12.5c1.104 0 2-.896 2-2V6.75m-16.5 0L12 3l9 3.75" /></svg>
+        <span>+977 9801165699 / 9848526938</span>
+      </a>
+      <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
+      <a href="mailto:info@kindergardenacademy.edu.np" class="flex items-center gap-1.5 hover:text-blue-600 transition">
+        <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+        <span>info@kindergardenacademy.edu.np</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav id="mainNav" class="fixed w-full z-50 glass-nav shadow-md transition-all duration-300" style="top: 0px;">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3 group">
+        <img src="Image/Logo.png" alt="Logo" class="h-14 w-14 md:h-16 md:w-16 object-contain transition-transform group-hover:scale-105 duration-300">
+        <span class="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">Kinder Garden Academy</span>
+      </a>
+      <ul class="hidden md:flex space-x-8 font-semibold text-gray-700">
+        <li><a href="index.html" class="relative group pb-1"><span class="group-hover:text-blue-700 transition">Home</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="programs.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Programs</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="teams.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Our Team</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="gallery.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Gallery</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="faqs.html" class="relative group pb-1"><span class="group-hover:text-blue-700">FAQs</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+      </ul>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://edigitalnepal.com/sms/login/?team_id=1610" class="relative px-5 py-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group overflow-hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11V17M8 11V7a4 4 0 118 0v4m-8 0h8a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6a2 2 0 012-2z" /></svg>
+          <span>Login</span>
+        </a>
+        <a href="#" class="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-md hover:shadow-lg transition">Result</a>
+      </div>
+      <button id="menuBtn" class="md:hidden text-3xl text-blue-700 focus:outline-none">☰</button>
+    </div>
+    <div id="mobileMenu" class="hidden flex-col bg-white/95 backdrop-blur-xl shadow-xl md:hidden border-t border-gray-200">
+      <a href="index.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Home</a>
+      <a href="programs.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Programs</a>
+      <a href="teams.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Our Team</a>
+      <a href="gallery.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Gallery</a>
+      <a href="faqs.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">FAQs</a>
+      <div class="flex gap-3 p-4">
+        <a href="https://edigitalnepal.com/sms/login/?team_id=1610" class="flex-1 text-center bg-blue-600 text-white py-2 rounded-full">Login</a>
+        <a href="#" class="flex-1 text-center bg-green-600 text-white py-2 rounded-full">Result</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Slider -->
+  <section class="relative h-screen w-full overflow-hidden">
+    <div class="absolute inset-0 transition-opacity duration-1000 opacity-100 slider-bg">
+      <img src="Image/Background/Background.jpg" alt="Slide 1" class="w-full h-full object-cover">
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+    <div class="absolute inset-0 transition-opacity duration-1000 opacity-0 slider-bg">
+      <img src="Image/Background/Background 2.jpeg" alt="Slide 2" class="w-full h-full object-cover">
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+    <div class="absolute inset-0 transition-opacity duration-1000 opacity-0 slider-bg">
+      <img src="Image/Background/Background 1.jpg" alt="Slide 3" class="w-full h-full object-cover">
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+    <div id="heroContentContainer" class="relative z-10 h-full flex flex-col justify-center items-center text-center text-white px-6 transition-all duration-300">
+      <div class="max-w-3xl animate-fadeUp">
+        <span class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold tracking-wide mb-4">EST. 2063</span>
+        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight drop-shadow-2xl">Welcome to <span class="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Kinder Garden</span> Academy</h1>
+        <p class="text-lg md:text-xl text-gray-100 mt-6 max-w-2xl mx-auto">Nurturing young minds with excellence, creativity, and holistic growth</p>
+        <div class="mt-10 flex flex-wrap justify-center gap-5">
+          <a href="programs.html" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full text-white font-bold shadow-xl hover:scale-105 transition-transform">Explore Programs</a>
+          <a href="contact.html" class="px-8 py-3 bg-white/20 backdrop-blur-sm border border-white/40 rounded-full text-white font-semibold hover:bg-white/30 transition">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principal's Message -->
+  <section class="max-w-7xl mx-auto px-6 py-24 md:py-32 section-reveal">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="order-2 md:order-1">
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition"></div>
+          <img src="Image/Teacher Photos/Prithvi Bahadur Kunwar.jpg" class="rounded-2xl shadow-2xl w-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-[1.02]" alt="Principal">
+        </div>
+      </div>
+      <div class="order-1 md:order-2 space-y-5">
+        <span class="reveal-item inline-block text-blue-600 font-semibold tracking-wide">✨ Principal's Desk</span>
+        <h2 class="reveal-item text-4xl md:text-5xl font-bold text-gray-800">Message from <span class="gradient-text">the Principal</span></h2>
+        <p class="reveal-item text-gray-600 leading-relaxed text-lg">Welcome to our school community! We believe in fostering academic excellence, creativity, and holistic growth in every student. Our goal is to nurture future leaders who will contribute positively to society. With a dedicated team of educators, we ensure a safe, supportive, and inspiring environment for all learners.</p>
+        <div class="reveal-item pt-4 border-l-4 border-blue-600 pl-6">
+          <p class="font-bold text-gray-800 text-xl">Prithvi Bahadur Kunwar</p>
+          <p class="text-gray-500">Principal, Kinder Garden Academy</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="bg-gradient-to-b from-gray-100 to-white py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 section-reveal">
+        <span class="reveal-item text-blue-600 font-bold uppercase tracking-wider">Core Values</span>
+        <h2 class="reveal-item text-4xl md:text-5xl font-bold mt-2 text-gray-800">Why <span class="gradient-text">Choose Us</span></h2>
+        <p class="reveal-item text-gray-500 max-w-2xl mx-auto mt-4">A perfect blend of modern education, values, and extracurricular brilliance.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="reveal-item bg-white rounded-3xl p-8 shadow-xl card-hover text-center border border-gray-100">
+          <div class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">🎓</div>
+          <h3 class="text-2xl font-bold mb-3">Quality Education</h3>
+          <p class="text-gray-600">Experienced teachers and modern curriculum tailored for excellence in a nurturing environment.</p>
+          <div class="mt-5 flex justify-center gap-2 text-blue-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span class="text-xs text-gray-500">Certified Faculty</span></div>
+        </div>
+        <div class="reveal-item bg-white rounded-3xl p-8 shadow-xl card-hover text-center border border-gray-100">
+          <div class="w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center text-5xl mx-auto mb-6">🤝</div>
+          <h3 class="text-2xl font-bold mb-3">Student Support</h3>
+          <p class="text-gray-600">Personalized mentoring, counseling, and guidance for every child’s unique growth.</p>
+          <div class="mt-5 flex justify-center gap-2 text-emerald-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg><span class="text-xs text-gray-500">24/7 Care</span></div>
+        </div>
+        <div class="reveal-item bg-white rounded-3xl p-8 shadow-xl card-hover text-center border border-gray-100">
+          <div class="w-20 h-20 bg-amber-100 rounded-2xl flex items-center justify-center text-5xl mx-auto mb-6">⚽</div>
+          <h3 class="text-2xl font-bold mb-3">Extracurriculars</h3>
+          <p class="text-gray-600">Clubs, sports, arts, and leadership programs for holistic personality development.</p>
+          <div class="mt-5 flex justify-center gap-2 text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /></svg><span class="text-xs text-gray-500">20+ Activities</span></div>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 mt-12">
+        <div class="reveal-item bg-white/70 rounded-2xl p-6 flex items-start gap-4 shadow-md hover:shadow-lg transition">
+          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl">🏆</div>
+          <div><h4 class="font-bold text-lg">Award-Winning Institution</h4><p class="text-gray-500 text-sm">Recognized for excellence in early childhood education.</p></div>
+        </div>
+        <div class="reveal-item bg-white/70 rounded-2xl p-6 flex items-start gap-4 shadow-md hover:shadow-lg transition">
+          <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-2xl">🌍</div>
+          <div><h4 class="font-bold text-lg">Global Curriculum</h4><p class="text-gray-500 text-sm">International standards with local values.</p></div>
+        </div>
+        <div class="reveal-item bg-white/70 rounded-2xl p-6 flex items-start gap-4 shadow-md hover:shadow-lg transition">
+          <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-2xl">🚌</div>
+          <div><h4 class="font-bold text-lg">Safe Transport</h4><p class="text-gray-500 text-sm">GPS-enabled vehicles with trained attendants.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Events Section -->
+  <section class="py-24 bg-white section-reveal">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="reveal-item text-blue-600 font-bold uppercase tracking-wider">Stay Tuned</span>
+        <h2 class="reveal-item text-4xl md:text-5xl font-bold mt-2 text-gray-800">Upcoming <span class="gradient-text">Events</span></h2>
+        <p class="reveal-item text-gray-500 max-w-2xl mx-auto mt-4">Join us in these exciting moments. Mark your calendar!</p>
+      </div>
+      <div class="mb-12 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl shadow-md text-center">
+        <h3 class="text-xl font-bold text-gray-800 mb-3">🎉 Next Event Countdown: Annual Sports Day</h3>
+        <div id="countdownTimer" class="flex justify-center gap-3 md:gap-6 flex-wrap">
+          <div class="countdown-number"><span id="days">00</span><span class="text-xs block">Days</span></div>
+          <div class="countdown-number"><span id="hours">00</span><span class="text-xs block">Hours</span></div>
+          <div class="countdown-number"><span id="minutes">00</span><span class="text-xs block">Mins</span></div>
+          <div class="countdown-number"><span id="seconds">00</span><span class="text-xs block">Secs</span></div>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover border border-gray-100 event-card">
+          <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-blue-600 text-sm font-semibold mb-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> March 25, 2026</div>
+            <h3 class="text-2xl font-bold mb-2">Annual Sports Day</h3>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> 9:00 AM - 4:00 PM</div>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-4"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> School Sports Ground</div>
+            <p class="text-gray-600 text-sm mb-4">Exciting races, fun games, and prizes for all participants. Parents are warmly invited!</p>
+            <a href="#" class="inline-flex items-center text-blue-600 font-semibold hover:underline">Register Now →</a>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover border border-gray-100 event-card">
+          <div class="h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-emerald-600 text-sm font-semibold mb-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> April 10, 2026</div>
+            <h3 class="text-2xl font-bold mb-2">Parent-Teacher Meet</h3>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> 10:00 AM - 1:00 PM</div>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-4"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg> School Auditorium</div>
+            <p class="text-gray-600 text-sm mb-4">Discuss your child's progress with teachers. One-on-one sessions available.</p>
+            <a href="#" class="inline-flex items-center text-emerald-600 font-semibold hover:underline">Book Slot →</a>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover border border-gray-100 event-card">
+          <div class="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-purple-600 text-sm font-semibold mb-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> April 25, 2026</div>
+            <h3 class="text-2xl font-bold mb-2">Art & Craft Exhibition</h3>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> 11:00 AM - 3:00 PM</div>
+            <div class="flex items-center gap-2 text-gray-500 text-sm mb-4"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg> Creative Arts Center</div>
+            <p class="text-gray-600 text-sm mb-4">Showcasing creativity of our young artists. Come support their masterpieces!</p>
+            <a href="#" class="inline-flex items-center text-purple-600 font-semibold hover:underline">Learn More →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Partners -->
+  <section class="py-24 bg-gradient-to-b from-gray-50 to-white section-reveal">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="reveal-item text-blue-600 font-bold uppercase tracking-wider">Proud Partnerships</span>
+        <h2 class="reveal-item text-4xl md:text-5xl font-bold mt-2 text-gray-800">Our Partners & <span class="gradient-text">Collaborators</span></h2>
+        <p class="reveal-item text-gray-500 max-w-2xl mx-auto mt-4">Together we nurture the future. Trusted by leading organizations.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+1" alt="Partner 1" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">Edu Nepal</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+2" alt="Partner 2" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">Little Steps</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+3" alt="Partner 3" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">Global Kids</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+4" alt="Partner 4" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">Creative Minds</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+5" alt="Partner 5" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">EdTech Nepal</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-md w-full max-w-[150px] transition-all partner-logo cursor-pointer"><img src="https://placehold.co/150x80?text=Logo+6" alt="Partner 6" class="w-full h-auto object-contain"><p class="text-center text-xs text-gray-500 mt-2">Safe Child Intl</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Slider -->
+  <section class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14 section-reveal">
+        <span class="reveal-item text-blue-600 font-bold">❤️ Student Voices</span>
+        <h2 class="reveal-item text-4xl font-bold mt-2">What Our Students Say</h2>
+      </div>
+      <div class="relative overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-blue-50 to-indigo-50 p-8 md:p-12">
+        <div class="testimonial-slides flex transition-transform duration-700 ease-out">
+          <div class="min-w-full flex flex-col items-center text-center px-4">
+            <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-5"><img src="Image/Students/Biplove Kunwar.jpg" class="w-full h-full object-cover" alt="student"></div>
+            <p class="italic text-gray-700 text-lg max-w-2xl">"This school has given me the confidence to pursue my dreams. The teachers are supportive and inspiring!"</p>
+            <h4 class="mt-5 font-bold text-xl text-blue-800">Biplove Kunwar</h4>
+            <p class="text-gray-500">Batch 2080</p>
+          </div>
+          <div class="min-w-full flex flex-col items-center text-center px-4">
+            <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-5"><img src="Image/Students/Rabina Chaudhary.jpg" class="w-full h-full object-cover" alt="student"></div>
+            <p class="italic text-gray-700 text-lg max-w-2xl">"A wonderful environment to grow academically and personally. I cherish my journey here."</p>
+            <h4 class="mt-5 font-bold text-xl text-blue-800">Rabina Chaudhary</h4>
+            <p class="text-gray-500">Batch 2080</p>
+          </div>
+          <div class="min-w-full flex flex-col items-center text-center px-4">
+            <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-5"><img src="Image/Students/Alisha Kunwar.jpg" class="w-full h-full object-cover" alt="student"></div>
+            <p class="italic text-gray-700 text-lg max-w-2xl">"The extracurricular programs helped me discover my talents and make lifelong friends."</p>
+            <h4 class="mt-5 font-bold text-xl text-blue-800">Alisha Kunwar</h4>
+            <p class="text-gray-500">Batch 2081</p>
+          </div>
+        </div>
+        <div class="flex justify-center gap-3 mt-10">
+          <div class="testimonial-dot w-3 h-3 rounded-full bg-blue-500 cursor-pointer transition-all" data-index="0"></div>
+          <div class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer transition-all" data-index="1"></div>
+          <div class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer transition-all" data-index="2"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative bg-white border-t border-gray-100 footer-white-texture footer-noise overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-transparent"></div>
+    <div class="relative max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3"><img src="Image/Logo.png" class="w-12 h-12 rounded-xl shadow-md" alt="logo"><span class="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">Kinder Garden</span></div>
+          <p class="text-gray-500 leading-relaxed text-sm">Nurturing young minds with care and innovation. A place where learning meets joy and excellence.</p>
+          <div class="flex space-x-4">
+            <a href="https://www.facebook.com/profile.php?id=61558176006272" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600 transition-all duration-300 transform hover:scale-110"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82V14.708h-3.263v-3.623h3.263V8.413c0-3.23 1.973-4.987 4.86-4.987 1.382 0 2.568.103 2.912.149v3.377h-2.001c-1.57 0-1.874.746-1.874 1.84v2.415h3.748l-.488 3.623h-3.26V24h6.391c.729 0 1.326-.597 1.326-1.326V1.326C24 .597 23.403 0 22.675 0z"/></svg></a>
+            <a href="https://www.instagram.com/kinder_garden_academy/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-500 transition-all duration-300 transform hover:scale-110"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.056 1.97.246 2.43.418a4.92 4.92 0 0 1 1.75 1.01 4.918 4.918 0 0 1 1.01 1.75c.172.46.362 1.26.418 2.43.058 1.266.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.246 1.97-.418 2.43a4.924 4.924 0 0 1-1.01 1.75 4.922 4.922 0 0 1-1.75 1.01c-.46.172-1.26.362-2.43.418-1.266.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.246-2.43-.418a4.922 4.922 0 0 1-1.75-1.01 4.92 4.92 0 0 1-1.01-1.75c-.172-.46-.362-1.26-.418-2.43-.058-1.266-.07-1.645-.07-4.85s.012-3.584.07-4.85c.056-1.17.246-1.97.418-2.43a4.918 4.918 0 0 1 1.01-1.75 4.921 4.921 0 0 1 1.75-1.01c.46-.172 1.26-.362 2.43-.418C8.416 2.175 8.796 2.163 12 2.163zM12 5.838A6.162 6.162 0 1 0 18.162 12 6.162 6.162 0 0 0 12 5.838zM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/><circle cx="18.406" cy="5.594" r="1.44"/></svg></a>
+            <a href="https://www.tiktok.com/@kinder_garden_academy" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-black transition-all duration-300 transform hover:scale-110"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/></svg></a>
+          </div>
+        </div>
+        <div><h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Quick Links</h4><ul class="space-y-2 text-gray-600"><li><a href="index.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Home</a></li><li><a href="programs.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Programs</a></li><li><a href="teams.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Our Team</a></li><li><a href="gallery.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Gallery</a></li><li><a href="faqs.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> FAQs</a></li></ul></div>
+        <div><h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Contact</h4><ul class="space-y-3 text-gray-600 text-sm"><li class="flex items-start gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Sanfehatbazzar-03, Achham, Nepal</span></li><li class="flex items-center gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 1.104.896 2 2 2h15.5c1.104 0 2-.896 2-2m-16.5 0v10.5c0 1.104.896 2 2 2h12.5c1.104 0 2-.896 2-2V6.75m-16.5 0L12 3l9 3.75" /></svg><span>+977 9801165699 / 9848526938</span></li><li class="flex items-center gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg><span>info@kindergardenacademy.edu.np</span></li></ul></div>
+        <div><h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Stay Updated</h4><p class="text-gray-500 text-sm mb-4">Get latest news, events and updates.</p><div class="flex flex-col sm:flex-row gap-2"><input type="email" placeholder="Your email address" class="px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"><button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition shadow-md">Subscribe</button></div></div>
+      </div>
+      <div class="my-12 border-t border-gray-200"></div>
+      <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"><p>© 2025 <span class="font-semibold text-gray-700">Kinder Garden Academy</span>. All rights reserved.</p><p class="mt-2 md:mt-0">Designed with ❤️ by <a href="https://supeksha.com" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium transition animated-link">Supeksha Innovations Nepal</a></p></div>
+    </div>
+  </footer>
+
+  <button id="scrollTopBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white p-3 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none z-50 hover:scale-110"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg></button>
+
+  <script>
+    function adjustLayoutForTopBar() {
+      const topBar = document.getElementById('topContactBar');
+      const nav = document.getElementById('mainNav');
+      const heroContainer = document.getElementById('heroContentContainer');
+      if (topBar && nav) {
+        const topBarHeight = topBar.offsetHeight;
+        nav.style.top = topBarHeight + 'px';
+        if (heroContainer) {
+          const navHeight = nav.offsetHeight;
+          heroContainer.style.paddingTop = (topBarHeight + navHeight) + 'px';
+        }
+      }
+    }
+    window.addEventListener('load', () => {
+      adjustLayoutForTopBar();
+      setTimeout(() => {
+        const preloader = document.getElementById("preloader");
+        preloader.style.opacity = "0";
+        setTimeout(() => preloader.style.display = "none", 700);
+        openNotice();
+      }, 1000);
+      initCountdown();
+    });
+    window.addEventListener('resize', adjustLayoutForTopBar);
+
+    function openNotice() {
+      const modal = document.getElementById('noticeModal');
+      const box = document.getElementById('noticeBox');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-95','opacity-0');
+        box.classList.add('scale-100','opacity-100');
+      }, 20);
+    }
+    function closeNotice() {
+      const box = document.getElementById('noticeBox');
+      box.classList.remove('scale-100','opacity-100');
+      box.classList.add('scale-95','opacity-0');
+      setTimeout(() => {
+        document.getElementById('noticeModal').classList.add('hidden');
+      }, 250);
+    }
+    window.closeNotice = closeNotice;
+    window.openNotice = openNotice;
+
+    const menuBtn = document.getElementById('menuBtn'); const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn) menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); mobileMenu.classList.toggle('flex'); });
+
+    const slides = document.querySelectorAll('.slider-bg'); let currentSlide = 0;
+    setInterval(() => { if (slides.length) { slides[currentSlide].classList.remove('opacity-100'); slides[currentSlide].classList.add('opacity-0'); currentSlide = (currentSlide + 1) % slides.length; slides[currentSlide].classList.remove('opacity-0'); slides[currentSlide].classList.add('opacity-100'); } }, 5500);
+
+    const testimonialContainer = document.querySelector('.testimonial-slides'); const dots = document.querySelectorAll('.testimonial-dot'); let currentTest = 0;
+    function updateTestimonial(index) { if (!testimonialContainer) return; currentTest = index; testimonialContainer.style.transform = `translateX(-${index * 100}%)`; dots.forEach((dot, i) => { dot.classList.toggle('bg-blue-500', i === index); dot.classList.toggle('bg-gray-300', i !== index); }); }
+    dots.forEach((dot, idx) => dot.addEventListener('click', () => updateTestimonial(idx)));
+    setInterval(() => { let next = (currentTest + 1) % 3; updateTestimonial(next); }, 5500);
+
+    const sections = document.querySelectorAll('.section-reveal');
+    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer.unobserve(entry.target); } }); }, { threshold: 0.2 });
+    sections.forEach(section => observer.observe(section));
+
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => { if (window.scrollY > 300) scrollBtn.classList.add("opacity-100", "pointer-events-auto"); else scrollBtn.classList.remove("opacity-100", "pointer-events-auto"); });
+    scrollBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    (function(){ document.addEventListener('contextmenu', e => e.preventDefault()); document.onkeydown = function(e) { if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I","C","J"].includes(e.key.toUpperCase())) || (e.ctrlKey && ["U","S"].includes(e.key.toUpperCase()))) { e.preventDefault(); return false; } }; const protect = new Image(); Object.defineProperty(protect, 'id', { get: () => { alert("⚠️ DevTools are disabled!"); location.reload(); } }); console.log(protect); })();
+
+    function initCountdown() {
+      const targetDate = new Date("March 25, 2026 09:00:00").getTime();
+      function update() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        if (diff <= 0) {
+          document.getElementById('days').innerText = "00";
+          document.getElementById('hours').innerText = "00";
+          document.getElementById('minutes').innerText = "00";
+          document.getElementById('seconds').innerText = "00";
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+        document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+        document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+        document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+  </script>
+</body>
+</html>

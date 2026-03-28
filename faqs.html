@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FAQs - Kinder Garden Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-fadeUp {
+      animation: fadeUp 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,20,80,0.65) 100%);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease infinite;
+    }
+    /* FAQ accordion styling */
+    .faq-item {
+      transition: all 0.3s ease;
+    }
+    .faq-item summary {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      list-style: none;
+    }
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+    .faq-item summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-item summary .icon {
+      transition: transform 0.3s ease;
+    }
+    .faq-item[open] summary .icon {
+      transform: rotate(45deg);
+    }
+    /* Section reveal */
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .section-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-reveal .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .section-reveal.revealed .reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-reveal.revealed .reveal-item:nth-child(1) { transition-delay: 0.05s; }
+    .section-reveal.revealed .reveal-item:nth-child(2) { transition-delay: 0.1s; }
+    .section-reveal.revealed .reveal-item:nth-child(3) { transition-delay: 0.15s; }
+    .section-reveal.revealed .reveal-item:nth-child(4) { transition-delay: 0.2s; }
+    /* Link animation */
+    .animated-link {
+      position: relative;
+      display: inline-block;
+    }
+    .animated-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .animated-link:hover::after {
+      width: 100%;
+    }
+    /* Footer textures */
+    .footer-white-texture {
+      background-image: radial-gradient(circle at 25% 40%, rgba(0, 0, 0, 0.02) 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+    }
+    .footer-noise {
+      position: relative;
+    }
+    .footer-noise::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2563eb;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+
+  <!-- Preloader -->
+  <div id="preloader" class="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center z-[10000] transition-all duration-700">
+    <div class="relative">
+      <img src="Image/Sudeep Logo.png" alt="Logo" class="w-28 h-28 animate-pulse drop-shadow-2xl">
+      <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-12 h-1 bg-blue-500 rounded-full animate-ping"></div>
+    </div>
+    <h2 class="mt-10 text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">Supeksha Innovations Nepal</h2>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed w-full z-50 glass-nav shadow-md transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3 group">
+        <img src="Image/Logo.png" alt="Logo" class="h-14 w-14 md:h-16 md:w-16 object-contain transition-transform group-hover:scale-105 duration-300">
+        <span class="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">Kinder Garden Academy</span>
+      </a>
+      <ul class="hidden md:flex space-x-8 font-semibold text-gray-700">
+        <li><a href="index.html" class="relative group pb-1"><span class="group-hover:text-blue-700 transition">Home</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="programs.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Programs</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="teams.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Our Team</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="gallery.html" class="relative group pb-1"><span class="group-hover:text-blue-700">Gallery</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+        <li><a href="faqs.html" class="relative group pb-1"><span class="group-hover:text-blue-700">FAQs</span><span class="absolute -bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a></li>
+      </ul>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://edigitalnepal.com/sms/login/?team_id=1610" class="relative px-5 py-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group overflow-hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11V17M8 11V7a4 4 0 118 0v4m-8 0h8a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6a2 2 0 012-2z" /></svg>
+          <span>Login</span>
+        </a>
+        <a href="#" class="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-md hover:shadow-lg transition">Result</a>
+      </div>
+      <button id="menuBtn" class="md:hidden text-3xl text-blue-700 focus:outline-none">☰</button>
+    </div>
+    <div id="mobileMenu" class="hidden flex-col bg-white/95 backdrop-blur-xl shadow-xl md:hidden border-t border-gray-200">
+      <a href="index.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Home</a>
+      <a href="programs.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Programs</a>
+      <a href="teams.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Our Team</a>
+      <a href="gallery.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50">Gallery</a>
+      <a href="faqs.html" class="py-3 px-6 border-b border-gray-100 hover:bg-blue-50 font-medium text-blue-700">FAQs</a>
+      <div class="flex gap-3 p-4">
+        <a href="https://edigitalnepal.com/sms/login/?team_id=1610" class="flex-1 text-center bg-blue-600 text-white py-2 rounded-full">Login</a>
+        <a href="#" class="flex-1 text-center bg-green-600 text-white py-2 rounded-full">Result</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="Image/Background/Facebook Cover Photo.png" alt="FAQ Hero" class="w-full h-full object-cover">
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+    <div class="relative z-10 text-center text-white px-6 animate-fadeUp">
+      <span class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold tracking-wide mb-4">❓ Got Questions?</span>
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4">
+        Frequently Asked <span class="bg-gradient-to-r from-yellow-300 via-orange-300 to-pink-300 bg-clip-text text-transparent animate-pulse">Questions</span>
+      </h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">Find answers to common queries about our school, programs, and admissions.</p>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion Section -->
+  <section class="max-w-4xl mx-auto px-6 py-20 md:py-24">
+    <div class="space-y-4 section-reveal">
+      <!-- FAQ 1 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">📝</span>
+            What is the admission process?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">You can apply online or visit the school office for details. Our admissions team will guide you through the process including document submission, interaction, and enrollment.</p>
+      </details>
+
+      <!-- FAQ 2 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">🎓</span>
+            Do you offer scholarships?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">Yes, we offer need-based and merit-based scholarships. Eligible students can apply during the admission process.</p>
+      </details>
+
+      <!-- FAQ 3 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">⚽</span>
+            What extracurriculars are available?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">Sports, arts, music, dance, debate, science club, and student clubs are available to explore interests and talents.</p>
+      </details>
+
+      <!-- FAQ 4 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">🚌</span>
+            Is transportation available?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">Yes, we provide safe school bus services across the city with GPS tracking and trained attendants.</p>
+      </details>
+
+      <!-- FAQ 5 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">⏰</span>
+            What are the school timings?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">Our school runs from 9:30 AM to 3:30 PM, Sunday to Friday. Pre-school timings may vary slightly.</p>
+      </details>
+
+      <!-- FAQ 6 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">👧</span>
+            What age groups do you accept?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">We accept children aged 3 to 16 years for our preschool, primary school, and secondary school.</p>
+      </details>
+
+      <!-- FAQ 7 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">👩‍🏫</span>
+            What is the student-teacher ratio?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">We maintain a low student-teacher ratio of 15:1 to ensure personalized attention and quality learning.</p>
+      </details>
+
+      <!-- FAQ 8 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">🍎</span>
+            Do you provide meals?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">Yes, healthy snacks and meals are provided as part of our daily schedule, prepared in a hygienic kitchen.</p>
+      </details>
+
+      <!-- FAQ 9 -->
+      <details class="faq-item bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 reveal-item">
+        <summary class="font-semibold text-gray-800 text-lg flex justify-between items-center cursor-pointer">
+          <span class="flex items-center gap-3">
+            <span class="text-blue-500 text-xl">📱</span>
+            How can parents stay updated?
+          </span>
+          <span class="icon text-2xl text-blue-500">+</span>
+        </summary>
+        <p class="mt-4 text-gray-600 pl-8 border-l-2 border-blue-200">We communicate via our school app, emails, newsletters, and regular parent-teacher meetings.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="bg-gradient-to-r from-blue-600 to-indigo-700 py-16 my-8">
+    <div class="max-w-4xl mx-auto text-center text-white px-6 section-reveal">
+      <h2 class="reveal-item text-3xl md:text-4xl font-bold mb-4">Still Have Questions?</h2>
+      <p class="reveal-item text-lg opacity-90 mb-8">We're here to help! Contact us directly for personalized assistance.</p>
+      <div class="reveal-item flex flex-wrap justify-center gap-4">
+        <a href="contact.html" class="px-8 py-3 bg-white text-blue-700 rounded-full font-bold shadow-lg hover:shadow-xl transition transform hover:scale-105">Contact Us</a>
+        <a href="mailto:infokindergardenacademy@edu.np" class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition">Email Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (Modern White with Updated Social Icons) -->
+  <footer class="relative bg-white border-t border-gray-100 footer-white-texture footer-noise overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-transparent"></div>
+    <div class="relative max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <!-- Brand Column -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="Image/Logo.png" class="w-12 h-12 rounded-xl shadow-md" alt="logo">
+            <span class="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">Kinder Garden</span>
+          </div>
+          <p class="text-gray-500 leading-relaxed text-sm">Nurturing young minds with care and innovation. A place where learning meets joy and excellence.</p>
+          <div class="flex space-x-4">
+ <!-- Facebook -->
+            <a href="https://www.facebook.com/profile.php?id=61558176006272" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600 transition-all duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82V14.708h-3.263v-3.623h3.263V8.413c0-3.23 1.973-4.987 4.86-4.987 1.382 0 2.568.103 2.912.149v3.377h-2.001c-1.57 0-1.874.746-1.874 1.84v2.415h3.748l-.488 3.623h-3.26V24h6.391c.729 0 1.326-.597 1.326-1.326V1.326C24 .597 23.403 0 22.675 0z"/>
+              </svg>
+            </a>
+            <!-- Instagram (Proper Icon) -->
+            <a href="https://www.instagram.com/kinder_garden_academy/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-500 transition-all duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.056 1.97.246 2.43.418a4.92 4.92 0 0 1 1.75 1.01 4.918 4.918 0 0 1 1.01 1.75c.172.46.362 1.26.418 2.43.058 1.266.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.246 1.97-.418 2.43a4.924 4.924 0 0 1-1.01 1.75 4.922 4.922 0 0 1-1.75 1.01c-.46.172-1.26.362-2.43.418-1.266.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.246-2.43-.418a4.922 4.922 0 0 1-1.75-1.01 4.92 4.92 0 0 1-1.01-1.75c-.172-.46-.362-1.26-.418-2.43-.058-1.266-.07-1.645-.07-4.85s.012-3.584.07-4.85c.056-1.17.246-1.97.418-2.43a4.918 4.918 0 0 1 1.01-1.75 4.921 4.921 0 0 1 1.75-1.01c.46-.172 1.26-.362 2.43-.418C8.416 2.175 8.796 2.163 12 2.163zM12 5.838A6.162 6.162 0 1 0 18.162 12 6.162 6.162 0 0 0 12 5.838zM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/>
+                <circle cx="18.406" cy="5.594" r="1.44"/>
+              </svg>
+            </a>
+            <!-- TikTok (Replaces Twitter) -->
+            <a href="https://www.tiktok.com/@kinder_garden_academy" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-black transition-all duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Quick Links</h4>
+          <ul class="space-y-2 text-gray-600">
+            <li><a href="index.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Home</a></li>
+            <li><a href="programs.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Programs</a></li>
+            <li><a href="teams.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Our Team</a></li>
+            <li><a href="gallery.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> Gallery</a></li>
+            <li><a href="faqs.html" class="hover:text-blue-600 transition flex items-center gap-2 animated-link"><span class="text-blue-400">▹</span> FAQs</a></li>
+          </ul>
+        </div>
+        <!-- Contact Info -->
+        <div>
+          <h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Contact</h4>
+          <ul class="space-y-3 text-gray-600 text-sm">
+            <li class="flex items-start gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Sanfehatbazzar-03, Achham, Nepal</span></li>
+            <li class="flex items-center gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 1.104.896 2 2 2h15.5c1.104 0 2-.896 2-2m-16.5 0v10.5c0 1.104.896 2 2 2h12.5c1.104 0 2-.896 2-2V6.75m-16.5 0L12 3l9 3.75" /></svg><span>+977 9801165699 / 9848526938</span></li>
+            <li class="flex items-center gap-3 hover:text-gray-800 transition"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg><span>infokindergardenacademy@edu.np</span></li>
+          </ul>
+        </div>
+        <!-- Newsletter -->
+        <div>
+          <h4 class="text-lg font-bold text-gray-800 mb-5 relative inline-block after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-8 after:h-0.5 after:bg-blue-500">Stay Updated</h4>
+          <p class="text-gray-500 text-sm mb-4">Get latest news, events and updates.</p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition shadow-md">Subscribe</button>
+          </div>
+        </div>
+      </div>
+      <div class="my-12 border-t border-gray-200"></div>
+      <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+        <p>© 2025 <span class="font-semibold text-gray-700">Kinder Garden Academy</span>. All rights reserved.</p>
+        <p class="mt-2 md:mt-0">Designed with ❤️ by <a href="https://supeksha.com" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium transition animated-link">Supeksha Innovations Nepal</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollTopBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white p-3 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none z-50 hover:scale-110"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg></button>
+
+  <script>
+    // Preloader
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const preloader = document.getElementById("preloader");
+        preloader.style.opacity = "0";
+        setTimeout(() => preloader.style.display = "none", 700);
+      }, 1000);
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('flex');
+      });
+    }
+
+    // Scroll reveal for FAQ section
+    const sections = document.querySelectorAll('.section-reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(section => observer.observe(section));
+
+    // Scroll to top button
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) scrollBtn.classList.add("opacity-100", "pointer-events-auto");
+      else scrollBtn.classList.remove("opacity-100", "pointer-events-auto");
+    });
+    scrollBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // Anti DevTools
+    (function(){
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.onkeydown = function(e) {
+        if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I","C","J"].includes(e.key.toUpperCase())) || (e.ctrlKey && ["U","S"].includes(e.key.toUpperCase()))) {
+          e.preventDefault(); return false;
+        }
+      };
+      const protect = new Image();
+      Object.defineProperty(protect, 'id', { get: () => { alert("⚠️ DevTools are disabled!"); location.reload(); } });
+      console.log(protect);
+    })();
+  </script>
+</body>
+</html>
